@@ -7,6 +7,17 @@ const { useState, useEffect } = React;
       const [sortBy, setSortBy] = useState('Recommended');
       const [sortOpen, setSortOpen] = useState(false);
       const sortOptions = ['Recommended', 'Highest rated', 'Most reviewed', 'Date: soonest', 'Nearest to me'];
+      
+      const [activeFilters, setActiveFilters] = useState(new Set());
+      const [currentPage, setCurrentPage] = useState(1);
+      const [defaultFilter] = useState(() => {
+        const filterNames = ['Dates', 'Age', 'Gender', 'Level', 'Format', 'Region'];
+        return filterNames[Math.floor(Math.random() * filterNames.length)];
+      });
+
+      useEffect(() => {
+        setActiveFilters(new Set([defaultFilter]));
+      }, []);
 
       
 
@@ -35,13 +46,133 @@ const { useState, useEffect } = React;
           org: 'DC Metro Soccer', orgYears: 6, tags: ['U13–U17', '9v9', 'Highest'],
           reviews: 990, spots: 'Only 4 spots',
           quote: 'College Connect mixer changed my recruiting timeline. Five legit conversations.', reviewer: 'Jordan P. · Player' },
-        { id: 5, title: 'Coastal Classic Cup', location: 'San Diego, CA', dates: 'Aug 1–3',
-          photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#ff9a56,#ff6a88)',
-          coachRating: 4.6, coachCount: 245, attendeeRating: 4.7, attendeeCount: 389,
-          org: 'Coastal Soccer Alliance', orgYears: 5, tags: ['U8–U12', '7v7', 'Middle'],
-          reviews: 634, spots: 'Open',
-          quote: 'Beachside fields, tight scheduling, the kids never wanted to leave.', reviewer: 'Tom B. · U10 Coach' },
-      ];
+          { id: 5, title: 'Coastal Classic Cup', location: 'San Diego, CA', dates: 'Aug 1–3',
+            photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#ff9a56,#ff6a88)',
+            coachRating: 4.6, coachCount: 245, attendeeRating: 4.7, attendeeCount: 389,
+            org: 'Coastal Soccer Alliance', orgYears: 5, tags: ['U8–U12', '7v7', 'Middle'],
+            reviews: 634, spots: 'Open',
+            quote: 'Beachside fields, tight scheduling, the kids never wanted to leave.', reviewer: 'Tom B. · U10 Coach', sponsored: false },
+          { id: 6, title: 'New York Elite Cup', location: 'New York, NY', dates: 'Aug 8–10',
+            photo: '1500648767791-00dcc994a43e', tint: 'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+            coachRating: 4.8, coachCount: 356, attendeeRating: 4.7, attendeeCount: 512,
+            org: 'NY Youth Soccer Assoc', orgYears: 15, tags: ['U14–U18', '11v11', 'Highest'],
+            reviews: 845, spots: '2 spots left',
+            quote: 'Elite competition with scouts watching. Life-changing experience.', reviewer: 'Alex M. · Director', sponsored: false },
+          { id: 7, title: 'Texas Premier Showcase', location: 'Austin, TX', dates: 'Jul 18–20',
+            photo: '1459865264687-595d652de67e', tint: 'linear-gradient(135deg,#f59e0b,#d97706)',
+            coachRating: 4.7, coachCount: 298, attendeeRating: 4.6, attendeeCount: 445,
+            org: 'Texas Soccer League', orgYears: 10, tags: ['U10–U16', '11v11', 'Upper'],
+            reviews: 723, spots: 'Open',
+            quote: 'Great organization and competitive teams. Highly recommend.', reviewer: 'Lisa R. · Coach', sponsored: true },
+          { id: 8, title: 'California Classic', location: 'Los Angeles, CA', dates: 'Sep 12–14',
+            photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#ec4899,#be185d)',
+            coachRating: 4.9, coachCount: 425, attendeeRating: 4.8, attendeeCount: 634,
+            org: 'SoCal Youth Sports', orgYears: 12, tags: ['U12–U18', '11v11', 'Highest'],
+            reviews: 1205, spots: 'Only 1 spot',
+            quote: 'Incredible fields and amazing hospitality. Coming back next year!', reviewer: 'James T. · Parent', sponsored: false },
+          { id: 9, title: 'Chicago Invitational', location: 'Chicago, IL', dates: 'Jun 15–17',
+            photo: '1574629810360-7efbbe195018', tint: 'linear-gradient(135deg,#06b6d4,#0891b2)',
+            coachRating: 4.6, coachCount: 267, attendeeRating: 4.5, attendeeCount: 389,
+            org: 'Midwest Soccer Hub', orgYears: 8, tags: ['U8–U14', '7v7', 'Middle'],
+            reviews: 567, spots: 'Open',
+            quote: 'Fun atmosphere and competitive matches. Great for younger players.', reviewer: 'Michael H. · U11 Coach', sponsored: false },
+          { id: 10, title: 'Boston Youth Elite', location: 'Boston, MA', dates: 'Aug 22–24',
+            photo: '1551958219-acbc608c6377', tint: 'linear-gradient(135deg,#10b981,#059669)',
+            coachRating: 4.8, coachCount: 334, attendeeRating: 4.7, attendeeCount: 501,
+            org: 'New England Soccer', orgYears: 14, tags: ['U13–U17', '11v11', 'Highest'],
+            reviews: 892, spots: '3 spots left',
+            quote: 'Professional tournament experience. Highly competitive level.', reviewer: 'Robert L. · Director', sponsored: false },
+          { id: 11, title: 'Miami Cup Showcase', location: 'Miami, FL', dates: 'Jul 25–27',
+            photo: '1431324155629-1a6deb1dec8d', tint: 'linear-gradient(135deg,#f97316,#ea580c)',
+            coachRating: 4.7, coachCount: 289, attendeeRating: 4.6, attendeeCount: 412,
+            org: 'Florida Youth Events', orgYears: 7, tags: ['U10–U15', '7v7', 'Upper'],
+            reviews: 678, spots: 'Open',
+            quote: 'Beautiful weather and well-organized event. Loved it!', reviewer: 'Sarah N. · Parent', sponsored: false },
+          { id: 12, title: 'Philadelphia Premier', location: 'Philadelphia, PA', dates: 'Sep 5–7',
+            photo: '1459865264687-595d652de67e', tint: 'linear-gradient(135deg,#8b5cf6,#7c3aed)',
+            coachRating: 4.8, coachCount: 312, attendeeRating: 4.7, attendeeCount: 478,
+            org: 'East Coast Soccer', orgYears: 11, tags: ['U12–U18', '9v9', 'Highest'],
+            reviews: 756, spots: '2 spots left',
+            quote: 'Excellent tournament with strong teams and fair competition.', reviewer: 'David K. · U14 Coach', sponsored: true },
+          { id: 13, title: 'Seattle Sounders Cup', location: 'Seattle, WA', dates: 'Jun 28–30',
+            photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#06b6d4,#0891b2)',
+            coachRating: 4.7, coachCount: 276, attendeeRating: 4.6, attendeeCount: 401,
+            org: 'Pacific Northwest Soccer', orgYears: 9, tags: ['U10–U14', '7v7', 'Middle'],
+            reviews: 612, spots: 'Open',
+            quote: 'Great fields and friendly atmosphere. Highly recommend this tournament.', reviewer: 'Emma W. · Coach', sponsored: false },
+          { id: 14, title: 'Atlanta Youth Championship', location: 'Atlanta, GA', dates: 'Aug 15–17',
+            photo: '1500648767791-00dcc994a43e', tint: 'linear-gradient(135deg,#ec4899,#be185d)',
+            coachRating: 4.9, coachCount: 398, attendeeRating: 4.8, attendeeCount: 567,
+            org: 'Southern Youth Sports', orgYears: 13, tags: ['U13–U18', '11v11', 'Highest'],
+            reviews: 1089, spots: 'Only 1 spot',
+            quote: 'Best tournament I've attended. Amazing organization and competition.', reviewer: 'Chris P. · Director', sponsored: false },
+          { id: 15, title: 'Washington DC Elite', location: 'Washington, DC', dates: 'Jul 11–13',
+            photo: '1574629810360-7efbbe195018', tint: 'linear-gradient(135deg,#f59e0b,#d97706)',
+            coachRating: 4.6, coachCount: 254, attendeeRating: 4.5, attendeeCount: 378,
+            org: 'Mid-Atlantic Soccer', orgYears: 8, tags: ['U8–U12', '5v5', 'Middle'],
+            reviews: 523, spots: 'Open',
+            quote: 'Good tournament with nice facilities and friendly volunteers.', reviewer: 'Jennifer L. · Parent', sponsored: false },
+          { id: 16, title: 'Arizona Desert Cup', location: 'Phoenix, AZ', dates: 'Sep 19–21',
+            photo: '1551958219-acbc608c6377', tint: 'linear-gradient(135deg,#f59e0b,#d97706)',
+            coachRating: 4.8, coachCount: 321, attendeeRating: 4.7, attendeeCount: 489,
+            org: 'Southwest Youth Soccer', orgYears: 10, tags: ['U12–U16', '11v11', 'Upper'],
+            reviews: 834, spots: '4 spots left',
+            quote: 'Excellent tournament. The organization was top-notch.', reviewer: 'Mark T. · U13 Coach', sponsored: true },
+          { id: 17, title: 'Carolina Youth Cup', location: 'Charlotte, NC', dates: 'Aug 29–31',
+            photo: '1431324155629-1a6deb1dec8d', tint: 'linear-gradient(135deg,#10b981,#059669)',
+            coachRating: 4.7, coachCount: 298, attendeeRating: 4.6, attendeeCount: 434,
+            org: 'Carolina Soccer Events', orgYears: 9, tags: ['U10–U15', '7v7', 'Upper'],
+            reviews: 691, spots: 'Open',
+            quote: 'Fun and well-organized tournament. Great for developing teams.', reviewer: 'Nicole S. · Coach', sponsored: false },
+          { id: 18, title: 'Minnesota Premier Showcase', location: 'Minneapolis, MN', dates: 'Jul 4–6',
+            photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+            coachRating: 4.8, coachCount: 345, attendeeRating: 4.7, attendeeCount: 512,
+            org: 'Upper Midwest Soccer', orgYears: 11, tags: ['U13–U17', '11v11', 'Highest'],
+            reviews: 923, spots: '2 spots left',
+            quote: 'Fantastic tournament with high-level competition and great facilities.', reviewer: 'Paul D. · Director', sponsored: false },
+          { id: 19, title: 'Colorado Springs Elite', location: 'Colorado Springs, CO', dates: 'Sep 12–14',
+            photo: '1574629810360-7efbbe195018', tint: 'linear-gradient(135deg,#ec4899,#be185d)',
+            coachRating: 4.6, coachCount: 267, attendeeRating: 4.5, attendeeCount: 389,
+            org: 'Colorado Youth Soccer', orgYears: 8, tags: ['U10–U14', '7v7', 'Middle'],
+            reviews: 598, spots: 'Open',
+            quote: 'Great location and good tournament structure. Recommend it!', reviewer: 'Rachel G. · Parent', sponsored: false },
+          { id: 20, title: 'Florida Keys Cup', location: 'Key West, FL', dates: 'Oct 3–5',
+            photo: '1500648767791-00dcc994a43e', tint: 'linear-gradient(135deg,#06b6d4,#0891b2)',
+            coachRating: 4.9, coachCount: 412, attendeeRating: 4.8, attendeeCount: 578,
+            org: 'South Florida Sports', orgYears: 12, tags: ['U14–U18', '11v11', 'Highest'],
+            reviews: 1156, spots: 'Only 2 spots',
+            quote: 'Amazing tournament experience in a beautiful location. Worth every penny!', reviewer: 'Tom M. · U15 Coach', sponsored: true },
+          { id: 21, title: 'Nevada Youth Classic', location: 'Las Vegas, NV', dates: 'Jun 20–22',
+            photo: '1551958219-acbc608c6377', tint: 'linear-gradient(135deg,#f59e0b,#d97706)',
+            coachRating: 4.7, coachCount: 289, attendeeRating: 4.6, attendeeCount: 421,
+            org: 'Nevada Soccer League', orgYears: 7, tags: ['U11–U15', '9v9', 'Upper'],
+            reviews: 645, spots: 'Open',
+            quote: 'Well-organized tournament with great competition and fun atmosphere.', reviewer: 'Kevin H. · Coach', sponsored: false },
+          { id: 22, title: 'Utah Premier Cup', location: 'Salt Lake City, UT', dates: 'Jul 29–31',
+            photo: '1431324155629-1a6deb1dec8d', tint: 'linear-gradient(135deg,#10b981,#059669)',
+            coachRating: 4.8, coachCount: 334, attendeeRating: 4.7, attendeeCount: 501,
+            org: 'Rocky Mountain Soccer', orgYears: 10, tags: ['U12–U16', '11v11', 'Highest'],
+            reviews: 812, spots: '3 spots left',
+            quote: 'Excellent tournament with beautiful fields and friendly organizers.', reviewer: 'Susan B. · Director', sponsored: false },
+          { id: 23, title: 'Oregon Youth Showcase', location: 'Portland, OR', dates: 'Aug 5–7',
+            photo: '1606925797300-0b35e9d1794e', tint: 'linear-gradient(135deg,#8b5cf6,#7c3aed)',
+            coachRating: 4.7, coachCount: 276, attendeeRating: 4.6, attendeeCount: 405,
+            org: 'Pacific Soccer Alliance', orgYears: 9, tags: ['U10–U14', '7v7', 'Middle'],
+            reviews: 623, spots: 'Open',
+            quote: 'Great tournament with competitive teams and nice facilities.', reviewer: 'Linda M. · Parent', sponsored: false },
+          { id: 24, title: 'Hawaii Island Cup', location: 'Honolulu, HI', dates: 'Oct 10–12',
+            photo: '1500648767791-00dcc994a43e', tint: 'linear-gradient(135deg,#06b6d4,#0891b2)',
+            coachRating: 4.9, coachCount: 445, attendeeRating: 4.8, attendeeCount: 634,
+            org: 'Hawaii Youth Soccer', orgYears: 11, tags: ['U13–U18', '11v11', 'Highest'],
+            reviews: 1267, spots: 'Only 1 spot',
+            quote: 'Unforgettable experience in paradise. Highly recommend this tournament!', reviewer: 'Oscar L. · U17 Coach', sponsored: false },
+          { id: 25, title: 'Canada Cup Showcase', location: 'Vancouver, BC', dates: 'Aug 8–10',
+            photo: '1574629810360-7efbbe195018', tint: 'linear-gradient(135deg,#ec4899,#be185d)',
+            coachRating: 4.8, coachCount: 367, attendeeRating: 4.7, attendeeCount: 523,
+            org: 'Canadian Youth Soccer', orgYears: 13, tags: ['U12–U17', '11v11', 'Highest'],
+            reviews: 956, spots: '2 spots left',
+            quote: 'Fantastic tournament with international teams and top organization.', reviewer: 'Douglas W. · Director', sponsored: true },
+        ];
 
       const toggleFav = (id) => {
         const next = new Set(favorites);
@@ -286,155 +417,103 @@ const { useState, useEffect } = React;
             {showMap && <MapPanel />}
           </section>
 
-          {/* Featured */}
-          <section className="max-w-7xl mx-auto px-6 py-8">
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="display text-2xl font-extrabold tracking-tight">Featured this season</h2>
-              <a className="text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all cursor-pointer" style={{ color: '#e63329' }}>See all <ArrowUpRight size={15} /></a>
-            </div>
+{/* Events grid with pagination (24 per page) */}
+<section className="py-8">
+<div className={showMap ? "grid grid-cols-1 gap-5" : "grid md:grid-cols-2 gap-5"}>
+  {events.slice((currentPage - 1) * 24, currentPage * 24).map((ev, idx) => {
+    // Sponsored A+B pattern: every 5th event, show sponsored, then regular
+    const showSponsored = (idx + 1) % 5 === 0 && ev.sponsored;
+    const showRegular = !ev.sponsored;
 
-            <div className="grid lg:grid-cols-5 gap-5">
-              {/* Hero card */}
-              <div className="lg:col-span-3 group cursor-pointer">
-                <div className="relative rounded-3xl overflow-hidden h-[460px]" style={{ boxShadow: '0 8px 40px rgba(20,26,40,0.12)' }}>
-                  <Photo id={events[0].photo} tint={events[0].tint} className="w-full h-full" />
-                  <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(15,12,10,0.92) 0%, rgba(15,12,10,0.25) 55%, transparent 100%)' }} />
-                  <div className="absolute top-5 left-5 right-5 flex items-start justify-between">
-                    <div className="flex gap-2">
-                      <span className="px-3 py-1.5 rounded-full text-xs font-bold text-white flex items-center gap-1" style={{ background: '#e63329' }}>
-                        <Star size={11} className="fill-white" /> Featured
-                      </span>
-                      <span className="px-3 py-1.5 rounded-full text-xs font-bold" style={{ background: 'rgba(255,255,255,0.9)' }}>{events[0].spots}</span>
-                    </div>
-                    <button onClick={(e) => { e.stopPropagation(); toggleFav(events[0].id); }}
-                      className="w-10 h-10 rounded-full flex items-center justify-center backdrop-blur transition hover:scale-110" style={{ background: 'rgba(255,255,255,0.92)' }}>
-                      <Heart size={18} className={favorites.has(events[0].id) ? 'fill-red-600 text-red-600' : 'text-slate-700'} />
-                    </button>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-7 text-white">
-                    <div className="flex items-center gap-3 text-sm font-medium mb-2 text-white/80">
-                      <span className="flex items-center gap-1"><Calendar size={14} /> {events[0].dates}</span>
-                      <span className="flex items-center gap-1"><MapPin size={14} /> {events[0].location}</span>
-                    </div>
-                    <h3 className="display text-4xl font-extrabold leading-tight mb-4">{events[0].title}</h3>
-                    <div className="flex flex-wrap items-center gap-3 mb-4">
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-xl backdrop-blur" style={{ background: 'rgba(255,255,255,0.14)' }}>
-                        <span className="text-xs font-bold uppercase tracking-wide text-white/70">Coaches</span>
-                        <Stars rating={events[0].coachRating} size={14} />
-                        <span className="font-extrabold">{events[0].coachRating}</span>
-                        <span className="text-xs text-white/60">({events[0].coachCount})</span>
-                      </div>
-                      <div className="flex items-center gap-2 px-3 py-2 rounded-xl backdrop-blur" style={{ background: 'rgba(255,255,255,0.14)' }}>
-                        <span className="text-xs font-bold uppercase tracking-wide text-white/70">Attendees</span>
-                        <Stars rating={events[0].attendeeRating} size={14} />
-                        <span className="font-extrabold">{events[0].attendeeRating}</span>
-                        <span className="text-xs text-white/60">({events[0].attendeeCount})</span>
-                      </div>
-                    </div>
-                    <div className="flex gap-3 items-start pt-3 border-t border-white/15">
-                      <div className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center text-xs font-bold" style={{ background: '#e63329' }}>MD</div>
-                      <div>
-                        <p className="text-sm text-white/90 leading-snug italic">"{events[0].quote}"</p>
-                        <p className="text-xs text-white/55 mt-1">{events[0].reviewer}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right column */}
-              <div className="lg:col-span-2 flex flex-col gap-5">
-                {events.slice(1, 3).map((ev) => (
-                  <div key={ev.id} className="group cursor-pointer flex-1">
-                    <div className="relative rounded-3xl overflow-hidden h-full min-h-[218px]" style={{ boxShadow: '0 6px 28px rgba(20,26,40,0.10)' }}>
-                      <Photo id={ev.photo} tint={ev.tint} className="w-full h-full" />
-                      <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(15,12,10,0.9) 0%, rgba(15,12,10,0.15) 60%, transparent 100%)' }} />
-                      <button onClick={(e) => { e.stopPropagation(); toggleFav(ev.id); }}
-                        className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur transition hover:scale-110" style={{ background: 'rgba(255,255,255,0.92)' }}>
-                        <Heart size={16} className={favorites.has(ev.id) ? 'fill-red-600 text-red-600' : 'text-slate-700'} />
-                      </button>
-                      <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
-                        <div className="flex items-center gap-2 text-xs font-medium mb-1 text-white/75">
-                          <span>{ev.dates}</span><span>·</span><span>{ev.location}</span>
-                        </div>
-                        <h3 className="display text-xl font-extrabold leading-tight mb-2">{ev.title}</h3>
-                        <div className="flex items-center gap-3 text-sm">
-                          <span className="flex items-center gap-1"><Stars rating={ev.coachRating} /> <b>{ev.coachRating}</b></span>
-                          <span className="text-white/50 text-xs">{ev.reviews} reviews</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+    return showRegular ? (
+      <div key={ev.id} className="group cursor-pointer flex gap-4 p-4 rounded-2xl transition hover:shadow-lg" style={{ background: '#fff', boxShadow: '0 2px 12px rgba(20,26,40,0.05)' }}>
+        <Photo id={ev.photo} tint={ev.tint} className="w-32 h-32 rounded-xl flex-shrink-0" />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h3 className="display font-extrabold text-lg leading-tight">{ev.title}</h3>
+              <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
+                <span>{ev.dates}</span><span>·</span><span>{ev.location}</span>
               </div>
             </div>
-          </section>
+            <button onClick={(e) => { e.stopPropagation(); toggleFav(ev.id); }} className="p-1">
+              <Heart size={18} className={favorites.has(ev.id) ? 'fill-red-600 text-red-600' : 'text-slate-300'} />
+            </button>
+          </div>
+          <div className="flex gap-1.5 my-2.5 flex-wrap">
+            {ev.tags.map((t) => (
+              <span key={t} className="px-2 py-0.5 rounded-md text-xs font-semibold" style={{ background: '#f0f1f3', color: '#57534e' }}>{t}</span>
+            ))}
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-bold uppercase tracking-wide" style={{ color: '#e63329' }}>Coach</span>
+              <Stars rating={ev.coachRating} />
+              <span className="text-sm font-bold">{ev.coachRating}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs font-bold uppercase tracking-wide text-amber-500">Att.</span>
+              <Stars rating={ev.attendeeRating} />
+              <span className="text-sm font-bold">{ev.attendeeRating}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : showSponsored ? (
+      <div key={`sponsored-${ev.id}`} className="group cursor-pointer relative rounded-3xl overflow-hidden h-[280px]" style={{ boxShadow: '0 8px 40px rgba(20,26,40,0.12)', border: '2px solid #f59e0b' }}>
+        <Photo id={ev.photo} tint={ev.tint} className="w-full h-full" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(14,23,42,0.90) 0%, rgba(14,23,42,0.25) 55%, transparent 100%)' }} />
+        <div className="absolute top-4 left-4">
+          <span className="px-3 py-1.5 rounded-full text-xs font-bold text-white flex items-center gap-1" style={{ background: '#f59e0b' }}>★ Sponsored</span>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 p-5 text-white">
+          <h3 className="display text-2xl font-extrabold leading-tight mb-2">{ev.title}</h3>
+          <div className="flex items-center gap-2 text-sm font-medium mb-3 text-white/80">
+            <span className="flex items-center gap-1"><Calendar size={14} /> {ev.dates}</span>
+            <span className="flex items-center gap-1"><MapPin size={14} /> {ev.location}</span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl backdrop-blur" style={{ background: 'rgba(255,255,255,0.14)' }}>
+              <span className="text-xs font-bold uppercase tracking-wide text-white/70">Coaches</span>
+              <Stars rating={ev.coachRating} size={12} />
+              <span className="font-extrabold text-sm">{ev.coachRating}</span>
+              <span className="text-xs text-white/60">({ev.coachCount})</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : null;
+  })}
+</div>
 
-          {/* Sponsored */}
-          <section className="max-w-7xl mx-auto px-6 py-6">
-            <div className="rounded-3xl overflow-hidden relative" style={{ background: 'linear-gradient(110deg,#1a1714,#2d2620)' }}>
-              <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-30">
-                <Photo id="1551958219-acbc608c6377" tint="#000" className="w-full h-full" />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to right,#1a1714,transparent)' }} />
-              </div>
-              <div className="relative p-8 flex items-center justify-between gap-6">
-                <div>
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-xs font-bold uppercase tracking-widest text-white/50">Sponsored</span>
-                    <span className="px-2 py-0.5 rounded text-xs font-bold" style={{ background: '#e63329', color: '#fff' }}>Nike Soccer</span>
-                  </div>
-                  <h3 className="display text-2xl font-extrabold text-white mb-1">Win a Phantom GX team kit</h3>
-                  <p className="text-white/60 text-sm">Register your U10–U14 squad for any Nike-sponsored tournament by July 1.</p>
-                </div>
-                <button className="flex-shrink-0 px-6 py-3 rounded-xl bg-white font-bold text-sm hover:scale-105 transition">See eligible events</button>
-              </div>
-            </div>
-          </section>
+{/* Pagination */}
+<div className="flex items-center justify-center gap-2 mt-12">
+  {Array.from({ length: Math.ceil(events.length / 24) }, (_, i) => i + 1).map((page) => (
+    <button key={page}
+      onClick={() => { setCurrentPage(page); window.scrollTo(0, 0); }}
+      className="w-10 h-10 rounded-lg font-semibold text-sm transition"
+      style={{
+        background: currentPage === page ? '#0E172A' : '#fff',
+        color: currentPage === page ? '#fff' : '#475569',
+        border: `1px solid ${currentPage === page ? '#0E172A' : '#e8ecf3'}`
+      }}>
+      {page}
+    </button>
+  ))}
+</div>
+</section>
+</div>
 
-          {/* Recommended */}
-          <section className="max-w-7xl mx-auto px-6 py-8">
-            <div className="flex items-baseline justify-between mb-5">
-              <h2 className="display text-2xl font-extrabold tracking-tight">Recommended for you</h2>
-              <span className="text-sm text-slate-400">Based on your past registrations</span>
-            </div>
-            <div className="grid md:grid-cols-2 gap-5">
-              {events.slice(2).map((ev) => (
-                <div key={ev.id} className="group cursor-pointer flex gap-4 p-4 rounded-2xl transition hover:shadow-lg" style={{ background: '#fff', boxShadow: '0 2px 12px rgba(20,26,40,0.05)' }}>
-                  <Photo id={ev.photo} tint={ev.tint} className="w-32 h-32 rounded-xl flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <h3 className="display font-extrabold text-lg leading-tight">{ev.title}</h3>
-                        <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                          <span>{ev.dates}</span><span>·</span><span>{ev.location}</span>
-                        </div>
-                      </div>
-                      <button onClick={(e) => { e.stopPropagation(); toggleFav(ev.id); }} className="p-1">
-                        <Heart size={18} className={favorites.has(ev.id) ? 'fill-red-600 text-red-600' : 'text-slate-300'} />
-                      </button>
-                    </div>
-                    <div className="flex gap-1.5 my-2.5 flex-wrap">
-                      {ev.tags.map((t) => (
-                        <span key={t} className="px-2 py-0.5 rounded-md text-xs font-semibold" style={{ background: '#f0ede6', color: '#57534e' }}>{t}</span>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold uppercase tracking-wide" style={{ color: '#e63329' }}>Coach</span>
-                        <Stars rating={ev.coachRating} />
-                        <span className="text-sm font-bold">{ev.coachRating}</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-xs font-bold uppercase tracking-wide text-amber-500">Att.</span>
-                        <Stars rating={ev.attendeeRating} />
-                        <span className="text-sm font-bold">{ev.attendeeRating}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+{/* Right: sticky map column */}
+{showMap && (
+<aside className="hidden lg:block">
+<div className="sticky top-24">
+  <MapPanel />
+</div>
+</aside>
+)}
+</div>
+</div>
 
           {/* Trust strip */}
           <section className="max-w-7xl mx-auto px-6 py-12">
@@ -457,76 +536,110 @@ const { useState, useEffect } = React;
             </div>
           </section>
 
-          {/* Filters drawer */}
-          {showFilters && (
-            <div className="fixed inset-0 z-50 flex justify-end" style={{ background: 'rgba(20,26,40,0.4)' }} onClick={() => setShowFilters(false)}>
-              <div className="w-full max-w-md h-full overflow-y-auto p-7" style={{ background: '#f3f5f9' }} onClick={(e) => e.stopPropagation()}>
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="display text-2xl font-extrabold">Filters</h2>
-                  <button onClick={() => setShowFilters(false)} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-200 transition"><X size={20} /></button>
+{showFilters && (
+  <div className="fixed inset-0 z-50 flex justify-end" style={{ background: 'rgba(20,26,40,0.4)' }} onClick={() => setShowFilters(false)}>
+    <div className="w-full max-w-md h-full overflow-y-auto p-7" style={{ background: '#f3f5f9' }} onClick={(e) => e.stopPropagation()}>
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h2 className="display text-2xl font-extrabold">Filters</h2>
+          <p className="text-sm text-slate-500 mt-1">Narrow down to the right tournament</p>
+        </div>
+        <button onClick={() => setShowFilters(false)} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-slate-200 transition"><X size={20} /></button>
+      </div>
+      <div className="space-y-8">
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Dates</h3>
+          <div className="flex flex-col gap-2">
+            {[
+              { label: 'FROM', placeholder: 'dd/mm/yyyy' },
+              { label: 'TO', placeholder: 'dd/mm/yyyy' }
+            ].map((d, i) => (
+              <input key={i} type="text" placeholder={d.placeholder} 
+                className="px-4 py-2.5 rounded-xl text-sm font-semibold outline-none" 
+                style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} />
+            ))}
+          </div>
+          <div className="flex flex-wrap gap-2 mt-3">
+            {['This weekend', 'Next 30 days', 'Summer 2026', 'Holiday'].map((d) => (
+              <button key={d} className="px-4 py-2.5 rounded-xl font-semibold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{d}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Age group</h3>
+          <div className="grid grid-cols-4 gap-2">
+            {['U4', 'U5', 'U6', 'U7', 'U8', 'U9', 'U10', 'U11', 'U12', 'U13', 'U14', 'U15', 'U16', 'U17', 'U18', 'U19'].map((a) => (
+              <button key={a} className="py-2.5 rounded-xl font-bold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{a}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Gender</h3>
+          <div className="flex gap-2">
+            {['Boys', 'Girls', 'Both'].map((g) => (
+              <button key={g} className="flex-1 py-2.5 rounded-xl font-bold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{g}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Level of competition</h3>
+          <p className="text-xs text-slate-400 mb-3">Highest = ECNL / MLS Next caliber</p>
+          <div className="space-y-2">
+            {[
+              { label: 'Highest', desc: 'ECNL, MLS Next, national champions' },
+              { label: 'Upper', desc: 'State cup contenders, top regional clubs' },
+              { label: 'Middle', desc: 'Competitive club & travel teams' },
+              { label: 'Lower', desc: 'Recreational, U-Little, first-timer friendly' }
+            ].map((l) => (
+              <label key={l.label} className="flex items-start gap-3 p-4 rounded-xl cursor-pointer transition" style={{ background: '#fff', border: '1px solid #e8ecf3' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>
+                <input type="checkbox" className="mt-1 w-4 h-4" />
+                <div>
+                  <div className="font-bold text-sm" style={{ color: '#0E172A' }}>{l.label}</div>
+                  <div className="text-xs text-slate-500">{l.desc}</div>
                 </div>
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Dates</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['This weekend', 'Next 30 days', 'Summer 2026', 'Holiday'].map((d) => (
-                        <button key={d} className="px-4 py-2.5 rounded-xl font-semibold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{d}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Age group</h3>
-                    <div className="grid grid-cols-4 gap-2">
-                      {['U6', 'U8', 'U10', 'U12', 'U14', 'U16', 'U18', 'U19'].map((a) => (
-                        <button key={a} className="py-2.5 rounded-xl font-bold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{a}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Gender</h3>
-                    <div className="flex gap-2">
-                      {['Boys', 'Girls', 'Both'].map((g) => (
-                        <button key={g} className="flex-1 py-2.5 rounded-xl font-bold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{g}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Level of competition</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['Highest', 'Upper', 'Middle', 'Lower'].map((l) => (
-                        <button key={l} className="px-4 py-2.5 rounded-xl font-semibold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{l}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Format</h3>
-                    <div className="flex flex-wrap gap-2">
-                      {['3v3', '5v5', '7v7', '9v9', '11v11'].map((f) => (
-                        <button key={f} className="px-4 py-2.5 rounded-xl font-bold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{f}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Region</h3>
-                    <div className="grid grid-cols-3 gap-2">
-                      {['West', 'Mountain', 'Midwest', 'South', 'Southeast', 'Northeast'].map((r) => (
-                        <button key={r} className="py-2.5 rounded-xl font-semibold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{r}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Field surface</h3>
-                    <div className="flex gap-2">
-                      {['Grass', 'Turf'].map((s) => (
-                        <button key={s} className="flex-1 py-2.5 rounded-xl font-bold text-sm transition hover:border-slate-900" style={{ background: '#fff', border: '1px solid #e3e8f0' }}>{s}</button>
-                      ))}
-                    </div>
-                  </div>
-                  <button className="w-full py-4 rounded-xl text-white font-bold transition hover:brightness-110" style={{ background: '#e63329' }}>Show 12 tournaments</button>
-                </div>
-              </div>
-            </div>
-          )}
+              </label>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Format</h3>
+          <div className="flex flex-wrap gap-2">
+            {['3v3', '5v5', '7v7', '9v9', '11v11'].map((f) => (
+              <button key={f} className="px-4 py-2.5 rounded-xl font-bold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{f}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Region</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {['West', 'Mountain', 'Midwest', 'South', 'Southeast', 'Northeast'].map((r) => (
+              <button key={r} className="py-2.5 rounded-xl font-semibold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{r}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Field surface</h3>
+          <div className="flex gap-2">
+            {['Grass', 'Turf'].map((s) => (
+              <button key={s} className="flex-1 py-2.5 rounded-xl font-bold text-sm transition" style={{ background: '#fff', border: '1px solid #e8ecf3', color: '#475569' }} onMouseEnter={(e) => e.currentTarget.style.background = '#fbeae8'} onMouseLeave={(e) => e.currentTarget.style.background = '#fff'}>{s}</button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Open registration only</h3>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" className="w-4 h-4" />
+            <span className="text-sm text-slate-600">Hide closed tournaments</span>
+          </label>
+        </div>
+      </div>
+      <div className="flex gap-3 mt-8">
+        <button onClick={() => {}} className="flex-1 py-4 rounded-xl text-slate-700 font-bold text-sm transition hover:bg-slate-200" style={{ background: '#fff' }}>Reset</button>
+        <button onClick={() => setShowFilters(false)} className="flex-1 py-4 rounded-xl text-white font-bold text-sm transition hover:brightness-110" style={{ background: '#0E172A' }}>Show 12 tournaments</button>
+      </div>
+    </div>
+  </div>
+)}
         </div>
       );
     };
