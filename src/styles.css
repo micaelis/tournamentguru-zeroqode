@@ -1,0 +1,8 @@
+body { margin: 0; background: #f3f5f9; }
+    .display { font-family: 'Bricolage Grotesque', sans-serif; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .navlink::after { content: ''; position: absolute; left: 14px; right: 14px; bottom: 6px; height: 2px; background: #e63329; transform: scaleX(0); transform-origin: left; transition: transform .22s ease; border-radius: 2px; }
+    .navlink:hover { color: #1a1714 !important; }
+    .navlink:hover::after { transform: scaleX(1); }
+    .glass { background: rgba(255,255,255,0.14); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
